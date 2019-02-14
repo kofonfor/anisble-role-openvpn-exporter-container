@@ -1,0 +1,16 @@
+- name: start an OpenVPN exporter container
+  docker_container:
+    name: openvpn-exporter
+    image: kofonfor/openvpn_exporter
+    state: started
+    recreate: yes
+    restart_policy: always
+    read_only: yes
+    exposed_ports:
+      - 9176
+    ports:
+      - "{{ openvpn_exporter_host_address }}:9176:9176"
+    volumes:
+      - "{{ openvpn_exporter_status_file }}:/server.status"
+    command:
+      - "-openvpn.status_paths /server.status"
